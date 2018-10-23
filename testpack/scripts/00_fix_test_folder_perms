@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+# git will not store the folder perms as 777, so these tests fail without this.
+
+echo
+echo "  Fixing ${CI_WORKSPACE}/testpack/files/html perms"
+echo
+
+chmod 777 ${CI_WORKSPACE}/testpack/files/html
