@@ -1,4 +1,4 @@
-# Apache with PHP 7.2 on Ubuntu 16.04 LTS (Xenial Xerus)
+# Apache with PHP 7.2 on Ubuntu 18.04 LTS (Bionic Beaver)
 
 This image provides a common PHP hosting environment. The intent is for the PHP application itself to be stored in persistent storage wihch is then mounted in to this image at `/var/www`
 
@@ -18,7 +18,7 @@ UID=999
 PORT=80
 WEB_ROOT="/var/www/"
 
-docker run -u ${UID}:0 -p ${PORT}:8080 -v ${WEB_ROOT}:/var/www/ 1and1internet/ubuntu-16-apache-php-7.2
+docker run -u ${UID}:0 -p ${PORT}:8080 -v ${WEB_ROOT}:/var/www/ 1and1internet/ubuntu-18-apache-php-7.2
 ```
 
 ## Building and testing
@@ -32,8 +32,4 @@ Please see the top of the Makefile for various variables which you may choose to
 
 ## Modifying the tests
 
-The tests depend on shared testing code found in its own git repository called [drone-tests](https://github.com/1and1internet/drone-tests).
-
-To use a different tests repository set the TESTS_REPO variable to the git URL for the alternative repository. e.g. `make TESTS_REPO=https://github.com/1and1internet/drone-tests.git`
-
-To use a locally modified copy of the tests repository set the TESTS_LOCAL variable to the absolute path of where it is located. This variable will override the TESTS_REPO variable. e.g. `make TESTS_LOCAL=/tmp/github/1and1internet/drone-tests/`
+Look in testpack/files/scripts. Feel free to edit existing tests
