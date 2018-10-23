@@ -7,6 +7,7 @@ from selenium import webdriver
 import os.path
 import tarfile
 from io import BytesIO
+import time
 
 
 class Test1and1ApacheImage(unittest.TestCase):
@@ -60,6 +61,7 @@ class Test1and1ApacheImage(unittest.TestCase):
         self.container = Test1and1ApacheImage.container
 
     def check_success(self, page):
+        time.sleep(5)
         driver = webdriver.PhantomJS()
         driver.get("http://%s:8080/%s" % (Test1and1ApacheImage.container_ip, page))
         self.assertTrue(
