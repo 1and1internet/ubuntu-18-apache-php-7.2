@@ -38,7 +38,7 @@ RUN \
     apt-get remove -y software-properties-common && \
     apt-get autoremove -y && \
     rm -rf /var/lib/apt/lists/* && \
-    chmod 777 -R /var/www && \
+    chmod 777 -R /var/www /etc/php/7.2/mods-available && \
     apache2ctl -t && \
     mkdir -p /run /var/lib/apache2 /var/lib/php && \
     chmod -R 777 /run /var/lib/apache2 /var/lib/php /etc/php/7.2/apache2/php.ini
