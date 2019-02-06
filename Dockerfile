@@ -5,6 +5,11 @@ RUN git clone https://github.com/1and1internet/configurability.git . \
 	&& make php\
 	&& echo "configurability php plugin successfully built"
 
+FROM alpine as ioncube_loader
+RUN apk add git \
+	&& git -c http.sslVerify=false clone https://git.dev.glo.gb/cloudhostingpublic/ioncube_loader \
+	&& tar zxf ioncube_loader/ioncube_loaders_lin_x86-64.tar.gz
+
 FROM 1and1internet/ubuntu-18-apache
 MAINTAINER brian.wilkinson@1and1.co.uk
 ARG DEBIAN_FRONTEND=noninteractive
@@ -24,10 +29,6 @@ RUN \
     sed -i -e 's/memory_limit = 128M/memory_limit = 512M/g' /etc/php/7.2/apache2/php.ini && \
     sed -i -e 's/DirectoryIndex index.html index.cgi index.pl index.php index.xhtml index.htm/DirectoryIndex index.php index.html index.cgi index.pl index.xhtml index.htm/g' /etc/apache2/mods-available/dir.conf && \
     sed -i -r 's/MaxConnectionsPerChild\s+0/MaxConnectionsPerChild   ${MAXCONNECTIONSPERCHILD}/' /etc/apache2/mods-available/* && \
-    mkdir -p /usr/src/tmp/ioncube && \
-    curl -fSL "http://downloads.ioncube.com/loader_downloads/ioncube_loaders_lin_x86-64.tar.gz" -o /usr/src/tmp/ioncube_loaders_lin_x86-64.tar.gz && \
-    tar xfz /usr/src/tmp/ioncube_loaders_lin_x86-64.tar.gz -C /usr/src/tmp/ioncube && \
-    cp /usr/src/tmp/ioncube/ioncube/ioncube_loader_lin_7.2.so /usr/lib/php/20170718/ && \
     mkdir /tmp/composer/ && \
     cd /tmp/composer && \
     curl -sS https://getcomposer.org/installer | php && \
@@ -42,3 +43,5 @@ RUN \
     apache2ctl -t && \
     mkdir -p /run /var/lib/apache2 /var/lib/php && \
     chmod -R 777 /run /var/lib/apache2 /var/lib/php /etc/php/7.2/apache2/php.ini
+
+COPY --from=ioncube_loader /ioncube/ioncube_loader_lin_7.2.so /usr/lib/php/20170718/
