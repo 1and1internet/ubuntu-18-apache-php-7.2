@@ -21,7 +21,6 @@ RUN \
     apt-get install -y software-properties-common && \
     add-apt-repository -y -u ppa:ondrej/php && \
     apt-get update && \
-    apt-get install -y imagemagick graphicsmagick && \
     apt-get install -y libapache2-mod-php${PHP_VERSION} php${PHP_VERSION}-bcmath php${PHP_VERSION}-bz2 php${PHP_VERSION}-cli php${PHP_VERSION}-common php${PHP_VERSION}-curl php${PHP_VERSION}-dba php${PHP_VERSION}-gd php${PHP_VERSION}-gmp php${PHP_VERSION}-imap php${PHP_VERSION}-intl php${PHP_VERSION}-ldap php${PHP_VERSION}-mbstring php${PHP_VERSION}-mysql php${PHP_VERSION}-odbc php${PHP_VERSION}-pgsql php${PHP_VERSION}-recode php${PHP_VERSION}-snmp php${PHP_VERSION}-soap php${PHP_VERSION}-sqlite php${PHP_VERSION}-tidy php${PHP_VERSION}-xml php${PHP_VERSION}-xmlrpc php${PHP_VERSION}-xsl php${PHP_VERSION}-zip && \
     apt-get install -y php-gnupg php-imagick php-mongodb php-fxsl && \
     sed -i -e 's/max_execution_time = 30/max_execution_time = 300/g' /etc/php/${PHP_VERSION}/apache2/php.ini && \
@@ -39,12 +38,15 @@ RUN \
     chmod a+x /usr/local/bin/composer && \
     cd / && \
     rm -rf /tmp/composer && \
-    apt-get remove -y software-properties-common && \
+    apt-get remove -y software-properties-common vim && \
     apt-get autoremove -y && \
     rm -rf /var/lib/apt/lists/* && \
     chmod 777 -R /var/www /etc/php/${PHP_VERSION}/mods-available && \
     apache2ctl -t && \
     mkdir -p /run /var/lib/apache2 /var/lib/php && \
     chmod -R 777 /run /var/lib/apache2 /var/lib/php /etc/php/${PHP_VERSION}/apache2/php.ini
+
+# REMOVED TO ALLOW image-drone TO BUILD IMAGE (image too big):
+#    apt-get install -y imagemagick graphicsmagick && \
 
 COPY --from=ioncube_loader /ioncube/ioncube_loader_lin_${PHP_VERSION}.so /usr/lib/php/20170718/
